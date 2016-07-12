@@ -39,7 +39,7 @@ const SiteSettingsFormWriting = React.createClass( {
 
 		site = site || this.props.site;
 
-		if ( ! site.jetpack && config.isEnabled( 'manage/custom-post-types' ) ) {
+		if ( this.isCustomPostTypesSettingsEnabled() ) {
 			writingAttributes = writingAttributes.concat( [
 				'jetpack_testimonial',
 				'jetpack_portfolio'
@@ -57,6 +57,22 @@ const SiteSettingsFormWriting = React.createClass( {
 		return settings;
 	},
 
+	isCustomPostTypesSettingsEnabled() {
+		if ( ! config.isEnabled( 'manage/custom-post-types' ) ) {
+			return false;
+		}
+
+		const { site } = this.props;
+		if ( ! site || ! site.jetpack ) {
+			return true;
+		}
+
+		return (
+			site.versionCompare( '4.2.0', '>=' ) >= 0 &&
+			site.isModuleActive( 'custom-content-types' )
+		);
+	},
+
 	resetState: function() {
 		this.replaceState( {
 			fetchingSettings: true,
@@ -67,12 +83,9 @@ const SiteSettingsFormWriting = React.createClass( {
 	},
 
 	onSaveComplete() {
-		const { site } = this.props;
-		if ( ! site || site.jetpack || ! config.isEnabled( 'manage/custom-post-types' ) ) {
-			return;
+		if ( this.isCustomPostTypesSettingsEnabled() ) {
+			this.props.requestPostTypes( this.props.site.ID );
 		}
-
-		this.props.requestPostTypes( this.props.site.ID );
 	},
 
 	setCustomPostTypeSetting( revision ) {
@@ -135,7 +148,7 @@ const SiteSettingsFormWriting = React.createClass( {
 						</FormSelect>
 					</FormFieldset>
 
-					{ config.isEnabled( 'manage/custom-post-types' ) && ( ! this.props.site || ! this.props.site.jetpack ) && (
+					{ this.isCustomPostTypesSettingsEnabled() && (
 						<CustomPostTypeFieldset
 							requestingSettings={ this.state.fetchingSettings }
 							value={ pick( this.state, 'jetpack_testimonial', 'jetpack_portfolio' ) }
