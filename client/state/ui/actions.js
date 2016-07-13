@@ -4,6 +4,9 @@
  * Internal dependencies
  */
 import {
+	LAYOUT_FOCUS_SET,
+	LAYOUT_NEXT_FOCUS_SET,
+	LAYOUT_NEXT_FOCUS_ACTIVATE,
 	SELECTED_SITE_SET,
 	ROUTE_SET,
 	SECTION_SET,
@@ -80,5 +83,25 @@ export function setPreviewUrl( url ) {
 export function clearPreviewUrl() {
 	return {
 		type: PREVIEW_URL_CLEAR,
+	};
+}
+
+export function setLayoutFocus( area ) {
+	return {
+		type: LAYOUT_FOCUS_SET,
+		area,
+	};
+}
+
+export function setNextLayoutFocus( area ) {
+	return {
+		type: LAYOUT_NEXT_FOCUS_SET,
+		area,
+	};
+}
+
+export function activateNextLayoutFocus() {
+	return {
+		type: LAYOUT_NEXT_FOCUS_ACTIVATE,
 	};
 }

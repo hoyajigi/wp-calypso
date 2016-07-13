@@ -23,6 +23,7 @@ import reader from './reader/reducer';
 import olark from './olark/reducer';
 import actionLog from './action-log/reducer';
 import firstView from './first-view/reducer';
+import layoutFocus from './layout-focus/reducer';
 
 /**
  * Tracks the currently selected site ID.
@@ -103,6 +104,7 @@ export function currentPreviewUrl( state = null, action ) {
 const reducer = combineReducers( {
 	section,
 	isLoading,
+	layoutFocus,
 	hasSidebar,
 	isPreviewShowing,
 	currentPreviewUrl,
