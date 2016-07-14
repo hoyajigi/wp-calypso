@@ -42,12 +42,25 @@ class GuidedTours extends Component {
 		this.updateTarget( stepConfig );
 	}
 
+	componentWillReceiveProps( nextProps ) {
+		const { stepConfig } = nextProps.tourState;
+
+		stepConfig.continueIf &&
+			stepConfig.continueIf( nextProps.state ) &&
+			this.next();
+	}
 	shouldComponentUpdate( nextProps ) {
-		return this.props.tourState !== nextProps.tourState;
+		return (
+			( this.props.tourState.stepConfig !== nextProps.tourState.stepConfig ) ||
+			( this.props.sectionLoading !== nextProps.sectionLoading ) ||
+			( this.props.tourState.tour !== nextProps.tourState.tour ) ||
+			( this.props.tourState.shouldShow !== nextProps.tourState.shouldShow )
+		);
 	}
 
 	componentWillUpdate( nextProps ) {
 		const { stepConfig } = nextProps.tourState;
+
 		this.updateTarget( stepConfig );
 	}
 
@@ -82,7 +95,7 @@ class GuidedTours extends Component {
 			);
 			this.quit( { error: ERROR_WAITED_TOO_LONG } );
 		};
-		wait( { condition: nextTargetFound, consequence: proceedToNextStep, onError: abortTour } );
+		setTimeout( () => wait( { condition: nextTargetFound, consequence: proceedToNextStep, onError: abortTour } ), 0 );;
 	}
 
 	quit( options = {} ) {
