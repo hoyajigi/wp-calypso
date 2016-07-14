@@ -176,7 +176,7 @@ function boot() {
 }
 
 function renderLayout( reduxStore ) {
-	let props = { focus: layoutFocus };
+	let props = {};
 
 	if ( user.get() ) {
 		Object.assign( props, { user, sites, nuxWelcome, translatorInvitation } );
