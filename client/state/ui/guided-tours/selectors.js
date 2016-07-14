@@ -8,7 +8,7 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import { ROUTE_SET } from 'state/action-types';
-import { isSectionLoading, getInitialQueryArguments } from 'state/ui/selectors';
+import { isSectionLoading, getSectionName, getInitialQueryArguments } from 'state/ui/selectors';
 import { getActionLog } from 'state/ui/action-log/selectors';
 import { getPreference } from 'state/preferences/selectors';
 import createSelector from 'lib/create-selector';
