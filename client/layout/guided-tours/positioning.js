@@ -59,7 +59,7 @@ export const posToCss = ( { x, y } ) => ( {
 } );
 
 export function targetForSlug( targetSlug ) {
-	return query( '[data-tip-target="' + targetSlug + '"]' )[ 0 ];
+	return query( '[data-tip-target="' + targetSlug + '"]' )[ 0 ] || query( targetSlug )[ 0 ]
 }
 
 export function getValidatedArrowPosition( { targetSlug, arrow, stepPos } ) {
