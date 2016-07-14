@@ -24,7 +24,7 @@ class BasicStep extends Component {
 			'guided-tours__step',
 			'guided-tours__step-glow',
 			targetSlug && 'guided-tours__step-pointing',
-			targetSlug && arrow && 'guided-tours__step-pointing-' + getValidatedArrowPosition( {
+			targetSlug && 'guided-tours__step-pointing-' + getValidatedArrowPosition( {
 				targetSlug,
 				arrow,
 				stepPos
@@ -173,7 +173,7 @@ class ActionStep extends Component {
 			'guided-tours__step-action',
 			'guided-tours__step-glow',
 			'guided-tours__step-pointing',
-			arrow && 'guided-tours__step-pointing-' + getValidatedArrowPosition( {
+			'guided-tours__step-pointing-' + getValidatedArrowPosition( {
 				targetSlug,
 				arrow,
 				stepPos
