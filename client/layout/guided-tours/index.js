@@ -13,7 +13,7 @@ import scrollTo from 'lib/scroll-to';
 import { getGuidedTourState } from 'state/ui/guided-tours/selectors';
 import { nextGuidedTourStep, quitGuidedTour } from 'state/ui/guided-tours/actions';
 import { errorNotice } from 'state/notices/actions';
-import { getScrollableSidebar, query } from './positioning';
+import { getScrollableSidebar, targetForSlug } from './positioning';
 import {
 	BasicStep,
 	FirstStep,
@@ -52,17 +52,7 @@ class GuidedTours extends Component {
 	}
 
 	updateTarget( step ) {
-		this.tipTargets = this.getTipTargets();
-		this.currentTarget = step && step.target
-			? this.tipTargets[ step.target ]
-			: null;
-	}
-
-	getTipTargets() {
-		const tipTargetDomNodes = query( '[data-tip-target]' );
-		return tipTargetDomNodes.reduce( ( tipTargets, node ) => Object.assign( tipTargets, {
-			[ node.getAttribute( 'data-tip-target' ) ]: node
-		} ), {} );
+		this.currentTarget = step && step.target && targetForSlug( step.target );
 	}
 
 	next() {
@@ -71,7 +61,8 @@ class GuidedTours extends Component {
 
 		const nextTargetFound = () => {
 			if ( nextStepConfig && nextStepConfig.target ) {
-				const target = this.getTipTargets()[ nextStepConfig.target ];
+				const target = targetForSlug( nextStepConfig.target );
+				console.log( 'target ', nextStepConfig, target );
 				return target && target.getBoundingClientRect().left >= 0;
 			}
 			return true;
