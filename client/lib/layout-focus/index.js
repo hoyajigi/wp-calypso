@@ -102,6 +102,9 @@ var layoutFocus = {
 	// being targeted by things like browser inline search, which may cause odd
 	// positioning effects by having their CSS modified.
 	setFocusHideClass: function() {
+		if ( typeof document === 'undefined' ) {
+			return;
+		}
 		// Whenever layout focus changes remove `focus-hide` so
 		// that animations can occur with all elements visible.
 		document.documentElement.classList.remove( 'focus-hide' );
