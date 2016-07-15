@@ -135,6 +135,7 @@
 		"upgrades/paypal": true,
 		"upgrades/premium-themes": true,
 		"upgrades/removal-survey": true,
+		"upgrades/refund-survey": true,
 		"vip": false,
 		"vip/backups": true,
 		"vip/billing": true,
