@@ -20,7 +20,7 @@ import SignupForm from 'components/signup-form';
 import WpcomLoginForm from 'signup/wpcom-login-form';
 import config from 'config';
 import { createAccount, authorize, goBackToWpAdmin, activateManage } from 'state/jetpack-connect/actions';
-import { isCalypsoStartedConnection } from 'state/jetpack-connect/selectors';
+import { isCalypsoStartedConnection, getJetpackPlanSelected } from 'state/jetpack-connect/selectors';
 import JetpackConnectNotices from './jetpack-connect-notices';
 import observe from 'lib/mixins/data-observe';
 import userUtilities from 'lib/user/utils';
@@ -40,6 +40,8 @@ import safeImageUrl from 'lib/safe-image-url';
 import Button from 'components/button';
 import { requestSites } from 'state/sites/actions';
 import { isRequestingSites } from 'state/sites/selectors';
+import Plans from './plans';
+import CheckoutData from 'components/data/checkout';
 
 /**
  * Constants
@@ -449,6 +451,12 @@ const JetpackConnectAuthorizeForm = React.createClass( {
 	displayName: 'JetpackConnectAuthorizeForm',
 	mixins: [ observe( 'userModule' ) ],
 
+	getInitialState: function() {
+		return {
+			plan: null
+		};
+	},
+
 	isSSO() {
 		const site = this.props.jetpackConnectAuthorize.queryObject.site.replace( /.*?:\/\//g, '' );
 		if ( this.props.jetpackSSOSessions && this.props.jetpackSSOSessions[ site ] ) {
@@ -492,14 +500,30 @@ const JetpackConnectAuthorizeForm = React.createClass( {
 				: <LoggedOutForm { ...props } isSSO={ this.isSSO() } />
 		);
 	},
+
+	renderPlansSelector() {
+		return (
+				<div>
+					<CheckoutData>
+						<Plans showFirst={ true } siteSlug={ this.props.siteSlug } />
+					</CheckoutData>
+				</div>
+		);
+	},
+
 	render() {
 		const { queryObject } = this.props.jetpackConnectAuthorize;
+
+		if ( this.props.plansFirst && ! this.props.hasJetpackPlanSelected ) {
+			return this.renderPlansSelector();
+		}
+
 		if ( typeof queryObject === 'undefined' ) {
 			return this.renderNoQueryArgsError();
 		}
 
 		return (
-			<Main className="jetpack-connect">
+			<Main className="jetpack-connect__authorize-form jetpack-connect">
 				<div className="jetpack-connect__authorize-form">
 					{ this.renderForm() }
 				</div>
@@ -519,6 +543,9 @@ export default connect(
 			return isRequestingSites( state );
 		};
 		return {
+			siteSlug: state.jetpackConnect.jetpackConnectAuthorize.queryObject.site,
+			hasJetpackPlanSelected: !! getJetpackPlanSelected( state.jetpackConnect.jetpackConnectSelectedPlans, state.jetpackConnect.jetpackConnectAuthorize.queryObject.site ),
+			plansFirst: true,
 			jetpackConnectAuthorize: state.jetpackConnect.jetpackConnectAuthorize,
 			jetpackSSOSessions: state.jetpackConnect.jetpackSSOSessions,
 			jetpackConnectSessions: state.jetpackConnect.jetpackConnectSessions,

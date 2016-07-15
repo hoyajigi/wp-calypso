@@ -25,6 +25,7 @@ import {
 	JETPACK_CONNECT_CREATE_ACCOUNT_RECEIVE,
 	JETPACK_CONNECT_REDIRECT,
 	JETPACK_CONNECT_REDIRECT_WP_ADMIN,
+	JETPACK_CONNECT_SELECT_PLAN_IN_ADVANCE,
 	JETPACK_CONNECT_SSO_AUTHORIZE_REQUEST,
 	JETPACK_CONNECT_SSO_AUTHORIZE_SUCCESS,
 	JETPACK_CONNECT_SSO_AUTHORIZE_ERROR,
@@ -184,10 +185,22 @@ export function jetpackSSOSessions( state = {}, action ) {
 	return state;
 }
 
+export function jetpackConnectSelectedPlans( state = {}, action ) {
+	switch ( action.type ) {
+		case JETPACK_CONNECT_SELECT_PLAN_IN_ADVANCE:
+			return Object.assign( {}, state, { [ action.site ]: action.plan } );
+		case SERIALIZE:
+		case DESERIALIZE:
+			return state;
+	}
+	return state;
+}
+
 export default combineReducers( {
 	jetpackConnectSite,
 	jetpackSSOSessions,
 	jetpackSSO,
 	jetpackConnectAuthorize,
 	jetpackConnectSessions,
+	jetpackConnectSelectedPlans,
 } );

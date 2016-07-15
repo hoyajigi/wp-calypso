@@ -177,6 +177,38 @@ export default {
 		);
 	},
 
+	plansPreSelection( context ) {
+		const Plans = require( './plans' ),
+			CheckoutData = require( 'components/data/checkout' ),
+			site = sites.getSelectedSite(),
+			analyticsPageTitle = 'Plans',
+			basePath = route.sectionify( context.path ),
+			analyticsBasePath = basePath + '/:site';
+
+		if ( ! site || ! site.jetpack || ! config.isEnabled( 'jetpack/connect' ) ) {
+			return;
+		}
+
+		titleActions.setTitle( i18n.translate( 'Plans', { textOnly: true } ),
+			{ siteID: route.getSiteFragment( context.path ) }
+		);
+
+		analytics.tracks.recordEvent( 'calypso_plans_view' );
+		analytics.pageView.record( analyticsBasePath, analyticsPageTitle );
+
+		renderWithReduxStore(
+			<CheckoutData>
+				<Plans
+					sites={ sites }
+					context={ context }
+					showFirst={ true }
+					destinationType={ context.params.destinationType } />
+			</CheckoutData>,
+			document.getElementById( 'primary' ),
+			context.store
+		);
+	},
+
 	plansLanding( context ) {
 		const Plans = require( './plans' ),
 			CheckoutData = require( 'components/data/checkout' ),

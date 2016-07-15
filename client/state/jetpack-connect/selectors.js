@@ -14,11 +14,23 @@ const isCalypsoStartedConnection = function( state, siteSlug ) {
 };
 
 const getFlowType = function( state, site ) {
-	const siteSlug = site.slug.replace( /.*?:\/\//g, '' );
-	if ( state && state[ siteSlug ] ) {
-		return state[ siteSlug ].flowType;
+	if ( site ) {
+		const siteSlug = site.slug.replace( /.*?:\/\//g, '' );
+		if ( state && state[ siteSlug ] ) {
+			return state[ siteSlug ].flowType;
+		}
 	}
 	return false;
 };
 
-export default { isCalypsoStartedConnection, getFlowType };
+const getJetpackPlanSelected = function( state, site ) {
+	if ( site ) {
+		const siteSlug = site.replace( /.*?:\/\//g, '' );
+		if ( state && state[ siteSlug ] ) {
+			return state[ siteSlug ];
+		}
+	}
+	return false;
+};
+
+export default { isCalypsoStartedConnection, getFlowType, getJetpackPlanSelected };
