@@ -141,7 +141,7 @@ const EditorDrawer = React.createClass( {
 		let taxonomies;
 		if ( config.isEnabled( 'manage/custom-post-types' ) &&
 				false !== canJetpackUseTaxonomies ) {
-			taxonomies = <EditorDrawerTaxonomies postTerms={ get( post, 'terms' ) } />;
+			taxonomies = <EditorDrawerTaxonomies />;
 		}
 
 		return createFragment( { categories, taxonomies } );
