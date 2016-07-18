@@ -42,7 +42,7 @@ import { requestSites } from 'state/sites/actions';
 import { isRequestingSites } from 'state/sites/selectors';
 import Plans from './plans';
 import CheckoutData from 'components/data/checkout';
-import abtest from 'lib/abtest';
+import { abtest } from 'lib/abtest';
 
 /**
  * Constants
