@@ -14,7 +14,6 @@ import { getPlansBySite } from 'state/sites/plans/selectors';
 import { getFlowType } from 'state/jetpack-connect/selectors';
 import Main from 'components/main';
 import ConnectHeader from './connect-header';
-//import observe from 'lib/mixins/data-observe';
 import PlanList from 'components/plans/plan-list' ;
 import plansFactory from 'lib/plans-list';
 import { shouldFetchSitePlans } from 'lib/plans';
@@ -56,7 +55,8 @@ const Plans = React.createClass( {
 			this.autoselectPlan();
 		} else {
 			this.props.recordTracksEvent( 'calypso_jpc_plans_view', {
-				user: this.props.userId
+				user: this.props.userId,
+				before_connection: !! this.props.showFirst
 			} );
 		}
 		this.updateSitePlans( this.props.sitePlans );
@@ -161,6 +161,10 @@ const Plans = React.createClass( {
 	},
 
 	storeSelectedPlan( cartItem ) {
+		this.props.recordTracksEvent( 'calypso_jpc_plans_store_plan', {
+			user: this.props.userId,
+			plan: cartItem ? cartItem.product_slug : 'free'
+		} );
 		this.props.selectPlanInAdvance( ( cartItem ? cartItem.product_slug : 'free' ), this.props.siteSlug );
 	},
 
