@@ -39,6 +39,12 @@ const Plans = React.createClass( {
 		showJetpackFreePlan: React.PropTypes.bool
 	},
 
+	getInitialState: function getInitialState() {
+		return {
+			redirecting: false
+		};
+	},
+
 	componentWillUnmount: function() {
 		plans.off( 'change', this.autoselectPlan );
 	},
@@ -46,31 +52,46 @@ const Plans = React.createClass( {
 	componentDidMount() {
 		plans.on( 'change', this.autoselectPlan );
 
-		if ( this.props.flowType === 'pro' || this.props.flowType === 'premium' ) {
-			return this.autoselectPlan();
+		if ( this.hasPreSelectedPlan() ) {
+			this.autoselectPlan();
+		} else {
+			this.props.recordTracksEvent( 'calypso_jpc_plans_view', {
+				user: this.props.userId
+			} );
 		}
-
-		this.props.recordTracksEvent( 'calypso_jpc_plans_view', {
-			user: this.props.userId
-		} );
 		this.updateSitePlans( this.props.sitePlans );
 	},
 
+	hasPreSelectedPlan() {
+		return (
+			this.props.flowType === 'pro' ||
+			this.props.flowType === 'premium' ||
+			( ! this.props.showFirst && this.props.jetpackConnectSelectedPlans[ this.props.selectedSite.slug ] )
+		);
+	},
+
 	autoselectPlan() {
-		if ( this.props.flowType === 'pro' ) {
-			plans.get();
-			const plan = plans.getPlanBySlug( 'jetpack_business' );
-			if ( plan ) {
-				this.selectPlan( cartItems.getItemForPlan( plan ) );
-				return;
+		const selectedSiteSlug = this.props.selectedSite ? this.props.selectedSite.slug : this.props.siteSlug;
+		if ( ! this.props.showFirst ) {
+			if ( this.props.flowType === 'pro' ||
+				this.props.jetpackConnectSelectedPlans[ selectedSiteSlug ] === 'jetpack_business' ) {
+				plans.get();
+				const plan = plans.getPlanBySlug( 'jetpack_business' );
+				if ( plan ) {
+					return this.selectPlan( cartItems.getItemForPlan( plan ) );
+				}
 			}
-		}
-		if ( this.props.flowType === 'premium' ) {
-			plans.get();
-			const plan = plans.getPlanBySlug( 'jetpack_premium' );
-			if ( plan ) {
-				this.selectPlan( cartItems.getItemForPlan( plan ) );
-				return;
+			if ( this.props.flowType === 'premium' ||
+				this.props.jetpackConnectSelectedPlans[ selectedSiteSlug ] === 'jetpack_premium'
+			) {
+				plans.get();
+				const plan = plans.getPlanBySlug( 'jetpack_premium' );
+				if ( plan ) {
+					return this.selectPlan( cartItems.getItemForPlan( plan ) );
+				}
+			}
+			if ( this.props.jetpackConnectSelectedPlans[ selectedSiteSlug ] === 'free' ) {
+				this.selectFreeJetpackPlan();
 			}
 		}
 	},
@@ -82,9 +103,11 @@ const Plans = React.createClass( {
 
 		if ( this.hasPlan( this.props.selectedSite ) ) {
 			page.redirect( CALYPSO_REDIRECTION_PAGE + this.props.selectedSite.slug );
+			this.setState( { redirecting: true } );
 		}
 		if ( ! props.canPurchasePlans ) {
 			page.redirect( CALYPSO_REDIRECTION_PAGE + this.props.selectedSite.slug );
+			this.setState( { redirecting: true } );
 		}
 	},
 
@@ -93,14 +116,17 @@ const Plans = React.createClass( {
 	},
 
 	selectFreeJetpackPlan() {
+		this.props.selectPlanInAdvance( null, this.props.selectedSite.slug );
 		this.props.recordTracksEvent( 'calypso_jpc_plans_submit_free', {
 			user: this.props.userId
 		} );
 		if ( isCalypsoStartedConnection( this.props.jetpackConnectSessions, this.props.selectedSite.slug ) ) {
 			page.redirect( CALYPSO_REDIRECTION_PAGE + this.props.selectedSite.slug );
+			this.setState( { redirecting: true } );
 		} else {
 			const { queryObject } = this.props.jetpackConnectAuthorize;
 			this.props.goBackToWpAdmin( queryObject.redirect_after_auth );
+			this.setState( { redirecting: true } );
 		}
 	},
 
@@ -112,11 +138,16 @@ const Plans = React.createClass( {
 
 	selectPlan( cartItem ) {
 		const checkoutPath = `/checkout/${ this.props.selectedSite.slug }`;
+
+		// clears whatever we had stored in local cache
+		this.props.selectPlanInAdvance( null, this.props.selectedSite.slug );
+
 		if ( cartItem.product_slug === 'jetpack_premium' ) {
 			this.props.recordTracksEvent( 'calypso_jpc_plans_submit_99', {
 				user: this.props.userId
 			} );
 			upgradesActions.addItem( cartItem );
+			this.setState( { redirecting: true } );
 			page( checkoutPath );
 		}
 		if ( cartItem.product_slug === 'jetpack_business' ) {
@@ -125,6 +156,7 @@ const Plans = React.createClass( {
 			} );
 			upgradesActions.addItem( cartItem );
 			page( checkoutPath );
+			this.setState( { redirecting: true } );
 		}
 	},
 
@@ -147,10 +179,9 @@ const Plans = React.createClass( {
 	},
 
 	render() {
-		if ( this.props.flowType === 'pro' || this.props.flowType === 'premium' ) {
+		if ( this.state.redirecting || this.hasPreSelectedPlan() ) {
 			return null;
 		}
-
 		if ( ! this.props.showFirst &&
 			( ! this.props.canPurchasePlans || this.hasPlan( this.props.selectedSite ) )
 		) {
@@ -197,6 +228,7 @@ export default connect(
 			sitePlans: getPlansBySite( state, selectedSite ),
 			jetpackConnectSessions: state.jetpackConnect.jetpackConnectSessions,
 			jetpackConnectAuthorize: state.jetpackConnect.jetpackConnectAuthorize,
+			jetpackConnectSelectedPlans: state.jetpackConnect.jetpackConnectSelectedPlans,
 			userId: user ? user.ID : null,
 			canPurchasePlans: userCan( 'manage_options', selectedSite ),
 			flowType: getFlowType( state.jetpackConnect.jetpackConnectSessions, selectedSite ),

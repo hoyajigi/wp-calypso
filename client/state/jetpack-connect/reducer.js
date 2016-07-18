@@ -237,7 +237,8 @@ export function jetpackSSOSessions( state = {}, action ) {
 export function jetpackConnectSelectedPlans( state = {}, action ) {
 	switch ( action.type ) {
 		case JETPACK_CONNECT_SELECT_PLAN_IN_ADVANCE:
-			return Object.assign( {}, state, { [ action.site ]: action.plan } );
+			const siteSlug = action.site.replace( /^https?:\/\//, '' ).replace( /\//g, '::' );
+			return Object.assign( {}, state, { [ siteSlug ]: action.plan } );
 		case SERIALIZE:
 		case DESERIALIZE:
 			return state;

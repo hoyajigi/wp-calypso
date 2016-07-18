@@ -25,7 +25,7 @@ const getFlowType = function( state, site ) {
 
 const getJetpackPlanSelected = function( state, site ) {
 	if ( site ) {
-		const siteSlug = site.replace( /.*?:\/\//g, '' );
+		const siteSlug = site.replace( /^https?:\/\//, '' ).replace( /\//g, '::' );
 		if ( state && state[ siteSlug ] ) {
 			return state[ siteSlug ];
 		}

@@ -513,7 +513,6 @@ const JetpackConnectAuthorizeForm = React.createClass( {
 
 	render() {
 		const { queryObject } = this.props.jetpackConnectAuthorize;
-
 		if ( this.props.plansFirst && ! this.props.hasJetpackPlanSelected ) {
 			return this.renderPlansSelector();
 		}
