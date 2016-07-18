@@ -106,7 +106,7 @@ export function getCurrentQueryArguments( state ) {
  * @return {?String}  The current layout focus area
  */
 export function getCurrentLayoutFocus( state ) {
-	return get( state, 'ui.layoutFocus.current' );
+	return state.ui.layoutFocus.current;
 }
 
 /**
@@ -116,7 +116,7 @@ export function getCurrentLayoutFocus( state ) {
  * @return {?String}  The previous layout focus area
  */
 export function getPreviousLayoutFocus( state ) {
-	return get( state, 'ui.layoutFocus.previous' );
+	return state.ui.layoutFocus.previous;
 }
 
 /**
@@ -126,5 +126,5 @@ export function getPreviousLayoutFocus( state ) {
  * @return {?String}  The next layout focus area
  */
 export function getNextLayoutFocus( state ) {
-	return get( state, 'ui.layoutFocus.next' );
+	return state.ui.layoutFocus.next;
 }
