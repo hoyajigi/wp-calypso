@@ -132,6 +132,20 @@ const Plans = React.createClass( {
 		this.props.selectPlanInAdvance( ( cartItem ? cartItem.product_slug : 'free' ), this.props.siteSlug );
 	},
 
+	renderConnectHeader() {
+		const headerText = this.props.showFirst
+			? this.translate( 'You are moments away from connecting your site' )
+			: this.translate( 'Your site is now connected!' );
+		return (
+			<ConnectHeader
+				showLogo={ false }
+				headerText={ headerText }
+				subHeaderText={ this.translate( 'Now pick a plan that\'s right for you' ) }
+				step={ 1 }
+				steps={ 3 } />
+		);
+	},
+
 	render() {
 		if ( this.props.flowType === 'pro' || this.props.flowType === 'premium' ) {
 			return null;
@@ -153,12 +167,7 @@ const Plans = React.createClass( {
 			<div>
 				<Main>
 					<div className="jetpack-connect__plans">
-						<ConnectHeader
-							showLogo={ false }
-							headerText={ this.translate( 'Your site is now connected!' ) }
-							subHeaderText={ this.translate( 'Now pick a plan that\'s right for you' ) }
-							step={ 1 }
-							steps={ 3 } />
+						{ this.renderConnectHeader() }
 
 						<div id="plans" className="jetpack-connect__plans-list plans has-sidebar">
 							<PlanList
