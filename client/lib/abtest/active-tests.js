@@ -52,6 +52,15 @@ module.exports = {
 		},
 		defaultVariation: 'disabled'
 	},
+	jetpackConnectPlansFirst: {
+		datestamp: '20160715',
+		variations: {
+			showPlansBeforeAuth: 50,
+			showPlansAfterAuth: 50
+		},
+		defaultVariation: 'showPlansAfterAuth',
+		allowExistingUsers: true
+	},
 	multiDomainRegistrationV1: {
 		datestamp: '20200721',
 		variations: {
