@@ -1,3 +1,5 @@
+/** @ssr-ready **/
+
 /**
  * External dependencies
  */
@@ -10,6 +12,7 @@ import debugFactory from 'debug';
 import { ROUTE_SET } from 'state/action-types';
 import { isSectionLoading, getInitialQueryArguments } from 'state/ui/selectors';
 import { getActionLog } from 'state/ui/action-log/selectors';
+import { getCurrentUser } from 'state/current-user/selectors';
 import { getPreference } from 'state/preferences/selectors';
 import createSelector from 'lib/create-selector';
 import guidedToursConfig from 'layout/guided-tours/config';
@@ -73,6 +76,13 @@ const getTourFromQuery = createSelector(
 	},
 	getInitialQueryArguments
 );
+
+const DAY_IN_MILLISECONDS = 1000 * 3600 * 24;
+export const isNewUser = state => {
+	const user = getCurrentUser( state );
+	const creation = Date.parse( user.date );
+	return ( Date.now() - creation ) <= DAY_IN_MILLISECONDS;
+};
 
 /*
  * Returns true if `tour` has been seen in the current Calypso session, false
