@@ -118,7 +118,9 @@ const tours = {
 		meta: {
 			version: '20160609',
 			path: '/design',
-			context: () => false // insert magical new selectors here,
+			// insert magical new selectors here
+			// don't enable this in production (yet)
+			context: () => 'production' !== config( 'env' ),
 		},
 		description: 'Learn how to find and activate a theme',
 		showInContext: state => getSectionName( state ) === 'themes',
@@ -226,7 +228,15 @@ const tours = {
 			} ),
 			type: 'FinishStep',
 		},
-	}
+	},
+	test: {
+		meta: {
+			version: '20160719',
+			path: '/test',
+			// don't enable this in production
+			context: () => 'production' !== config( 'env' ),
+		},
+	},
 };
 
 function get( tour ) {
