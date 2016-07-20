@@ -162,12 +162,12 @@ const tours = {
 			text: i18n.translate( 'You can filter between free & paid themes. Try filtering by free themes' ),
 			type: 'ActionStep',
 			target: 'themes-tier-dropdown',
-			placement: 'below',
+			placement: 'above',
 			continueIf: state => {
 				const params = getQueryParams( state );
 				return params && params.tier === 'free';
 			},
-			arrow: 'top-right',
+			arrow: 'bottom-right',
 			next: 'choose-theme',
 		},
 		mobileFilter: {
@@ -186,7 +186,7 @@ const tours = {
 		'choose-theme': {
 			text: i18n.translate( 'Tap on any theme to see more details, or tap ••• to open all the theme options.' ),
 			type: 'ActionStep',
-			placement: 'right',
+			placement: 'center',
 			showInContext: state => getSectionName( state ) === 'themes',
 			continueIf: state => getSectionName( state ) === 'theme',
 			next: 'tab-bar',
