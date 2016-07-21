@@ -125,7 +125,7 @@ const tours = {
 		description: 'Learn how to find and activate a theme',
 		showInContext: state => getSectionName( state ) === 'themes',
 		init: {
-			text: i18n.translate( 'Find a theme thats good for you.' ),
+			text: i18n.translate( 'Hey there! Want me to show you how to find a great theme for your site?' ),
 			type: 'FirstStep',
 			placement: 'right',
 			next: isMobile() ? 'mobileSearch' : 'search',
@@ -139,7 +139,7 @@ const tours = {
 			next: 'search',
 		},
 		search: {
-			text: i18n.translate( 'Here you can search for a specific theme name or feature, try trying something ( e.g. "business" ).' ),
+			text: i18n.translate( 'Search for a specific theme name or feature here. Try typing something — for example, "business".' ),
 			type: 'ActionStep',
 			target: '.themes__search-card .search-open__icon',
 			placement: 'below',
@@ -159,7 +159,7 @@ const tours = {
 			next: 'mobileFilter',
 		},
 		filter: {
-			text: i18n.translate( 'You can filter between free & paid themes. Try filtering by free themes' ),
+			text: i18n.translate( 'Here you can filter between free and premium themes. Try filtering by free themes now.' ),
 			type: 'ActionStep',
 			target: 'themes-tier-dropdown',
 			placement: 'above',
@@ -184,7 +184,7 @@ const tours = {
 			next: 'choose-theme',
 		},
 		'choose-theme': {
-			text: i18n.translate( 'Tap on any theme to see more details, or tap ••• to open all the theme options.' ),
+			text: i18n.translate( "Tap on a theme to see more details — such as screenshots, the theme's features, or a preview." ),
 			type: 'ActionStep',
 			placement: 'center',
 			showInContext: state => getSectionName( state ) === 'themes',
@@ -200,7 +200,11 @@ const tours = {
 			next: 'live-preview',
 		},
 		'live-preview': {
-			text: i18n.translate( 'Tap here to see a live demo of the theme.' ),
+			text: i18n.translate( 'Tap here to see a {{strong}}live demo{{/strong}} of the theme.', {
+				components: {
+					strong: <strong />,
+				}
+			} ),
 			type: 'ActionStep',
 			placement: 'below',
 			target: 'theme-sheet-preview',
@@ -214,17 +218,13 @@ const tours = {
 			type: 'ActionStep',
 			placement: 'beside',
 			icon: 'cross-small',
-			text: i18n.translate( 'Tap to close the live preview.' ),
+			text: i18n.translate( "This is the theme's preview. Take a look around! Then tap to close the preview." ),
 			showInContext: state => state && isPreviewShowing( state ),
 			next: 'finish',
 		},
 		finish: {
 			placement: 'center',
-			text: i18n.translate( "That's it! You can choose to activate this theme now, or continue having a look around.", {
-				components: {
-					strong: <strong />,
-				}
-			} ),
+			text: i18n.translate( "That's it! You can choose to activate this theme now, or continue browsing all the other themes."),
 			type: 'FinishStep',
 		},
 	},
