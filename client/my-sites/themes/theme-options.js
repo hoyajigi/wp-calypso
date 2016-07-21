@@ -60,7 +60,7 @@ export const tryandcustomize = {
 		comment: 'label in the dialog for opening the Customizer with the theme in preview'
 	} ),
 	getUrl: ( theme, site ) => getCustomizeUrl( theme, site ),
-	hideForSite: ( { isCustomizable = false, isSiteUnmodified = false } = {} ) => ! isCustomizable || isSiteUnmodified,
+	hideForSite: ( { isCustomizable = false } = {} ) => ! isCustomizable,
 	hideForTheme: theme => theme.active
 };
 
