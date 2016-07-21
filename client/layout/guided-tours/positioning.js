@@ -87,7 +87,7 @@ export const posToCss = ( { x, y } ) => ( {
 } );
 
 export function targetForSlug( targetSlug ) {
-	if ( !targetSlug ) {
+	if ( ! targetSlug ) {
 		return null;
 	}
 	if ( targetSlug.indexOf( '.' ) !== -1 || targetSlug.indexOf( ' ' ) !== -1 ) {
