@@ -5,8 +5,6 @@
  */
 import Emitter from 'lib/mixins/emitter';
 import config from 'config';
-import { getCurrentLayoutFocus, getPreviousLayoutFocus } from 'state/ui/selectors';
-import { setLayoutFocus, setNextLayoutFocus, activateNextLayoutFocus } from 'state/ui/actions';
 
 // These are the structural areas
 // of the main body of Calypso
@@ -21,13 +19,6 @@ function isValid( area ) {
 	}
 
 	return valid;
-}
-
-// Used to keep a reference to the Redux store so we can update it when the
-// legacy Flux store is updated.
-let reduxStore;
-function bindLayoutFocusStore( store ) {
-	reduxStore = store;
 }
 
 /**
@@ -50,24 +41,14 @@ const layoutFocus = {
 	_next: null,
 
 	getCurrent: function() {
-		if ( reduxStore ) {
-			return getCurrentLayoutFocus( reduxStore.getState() );
-		}
 		return this._current || 'content';
 	},
 
 	getPrevious: function() {
-		if ( reduxStore ) {
-			return getPreviousLayoutFocus( reduxStore.getState() );
-		}
 		return this._previous;
 	},
 
 	set: function( area ) {
-		if ( reduxStore ) {
-			return reduxStore.dispatch( setLayoutFocus( area ) );
-		}
-
 		if ( ! isValid( area ) || area === this._current ) {
 			return;
 		}
@@ -80,9 +61,6 @@ const layoutFocus = {
 	},
 
 	next: function() {
-		if ( reduxStore ) {
-			return reduxStore.dispatch( activateNextLayoutFocus() );
-		}
 		let area = this._next;
 
 		// If we don't have a change queued and the focus has changed
@@ -103,10 +81,6 @@ const layoutFocus = {
 	},
 
 	setNext: function( area ) {
-		if ( reduxStore ) {
-			return reduxStore.dispatch( setNextLayoutFocus( area ) );
-		}
-
 		if ( ! isValid( area ) ) {
 			return;
 		}
@@ -120,7 +94,5 @@ const layoutFocus = {
  * Mixins
  */
 Emitter( layoutFocus );
-
-layoutFocus.bindLayoutFocusStore = bindLayoutFocusStore;
 
 module.exports = layoutFocus;

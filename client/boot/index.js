@@ -54,7 +54,6 @@ var config = require( 'config' ),
 	// The following components require the i18n mixin, so must be required after i18n is initialized
 	Layout;
 
-import { bindLayoutFocusStore } from 'lib/layout-focus';
 import { setLayoutFocus } from 'state/ui/actions';
 
 function init() {
@@ -197,7 +196,6 @@ function reduxStoreReady( reduxStore ) {
 		isIsomorphic = isSectionIsomorphic( reduxStore.getState() );
 
 	bindWpLocaleState( reduxStore );
-	bindLayoutFocusStore( reduxStore );
 
 	supportUser.setReduxStore( reduxStore );
 
