@@ -68,14 +68,17 @@ const ThemeShowcase = React.createClass( {
 			return this.props.defaultOption;
 		}
 		const { translate } = this.props;
-		const { purchase } = this.props.options;
+		const { purchase, activate } = this.props.options;
 		const { price } = this.state.previewingTheme;
+		let primaryOption = this.props.defaultOption;
 		if ( price && purchase ) {
-			const defaultOption = purchase;
-			defaultOption.label = translate( 'Pick this design' );
-			return defaultOption;
+			primaryOption = purchase;
+			primaryOption.label = translate( 'Pick this design' );
+		} else if ( activate ) {
+			primaryOption = activate;
+			primaryOption.label = translate( 'Activate this design' );
 		}
-		return this.props.defaultOption;
+		return primaryOption;
 	},
 
 	render() {
