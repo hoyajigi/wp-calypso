@@ -227,8 +227,8 @@ BasicStep.propTypes = {
 };
 
 ActionStep.propTypes = {
-	targetSlug: PropTypes.string.isRequired,
-	arrow: PropTypes.oneOf( ARROW_TYPES ).isRequired,
+	targetSlug: PropTypes.string,
+	arrow: PropTypes.oneOf( ARROW_TYPES ),
 	placement: PropTypes.string,
 	// text can be a translated string or a translated string with components
 	text: PropTypes.oneOfType( [
