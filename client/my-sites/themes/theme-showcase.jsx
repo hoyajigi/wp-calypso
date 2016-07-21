@@ -28,6 +28,7 @@ const ThemeShowcase = React.createClass( {
 		// Connected props
 		options: PropTypes.objectOf( optionShape ),
 		defaultOption: optionShape,
+		secondaryOption: optionShape,
 		getScreenshotOption: PropTypes.func
 	},
 
@@ -48,15 +49,22 @@ const ThemeShowcase = React.createClass( {
 		this.setState( { showPreview: ! this.state.showPreview, previewingTheme: theme } );
 	},
 
-	onPreviewButtonClick( theme ) {
+	onPrimaryPreviewButtonClick( theme ) {
 		const { defaultOption } = this.props;
 		this.setState( { showPreview: false }, () => {
 			defaultOption.action && defaultOption.action( theme );
 		} );
 	},
 
+	onSecondaryPreviewButtonClick( theme ) {
+		const { secondaryOption } = this.props;
+		this.setState( { showPreview: false }, () => {
+			secondaryOption && secondaryOption.action ? secondaryOption.action( theme ) : null;
+		} );
+	},
+
 	render() {
-		const { options, defaultOption, getScreenshotOption } = this.props;
+		const { options, defaultOption, getScreenshotOption, secondaryOption } = this.props;
 
 		// If a preview action is passed, use that. Otherwise, use our own.
 		if ( options.preview && ! options.preview.action ) {
@@ -73,7 +81,12 @@ const ThemeShowcase = React.createClass( {
 						onClose={ this.togglePreview }
 						primaryButtonLabel={ defaultOption.label }
 						getPrimaryButtonHref={ defaultOption.getUrl }
-						onPrimaryButtonClick={ this.onPreviewButtonClick } />
+						onPrimaryButtonClick={ this.onPrimaryPreviewButtonClick }
+						showSecondaryButton={ !! secondaryOption }
+						secondaryButtonLabel={ secondaryOption ? secondaryOption.label : null }
+						getSecondaryButtonHref={ secondaryOption ? secondaryOption.getUrl : null }
+						onSecondaryButtonClick={ this.onSecondaryPreviewButtonClick }
+					/>
 				}
 				<ThemesSelection search={ this.props.search }
 					siteId={ this.props.siteId }
