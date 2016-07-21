@@ -164,8 +164,10 @@ class ActionStep extends Component {
 					iconText: <strong>{ this.props.iconText }</strong>,
 				},
 			} );
-		} else {
+		} else if ( ! this.props.continueIf ) {
 			instructions = this.props.translate( 'Click to continue.' );
+		} else {
+			instructions = null;
 		}
 
 		const classes = [
