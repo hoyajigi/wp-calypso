@@ -11,7 +11,6 @@ import {
 	LAYOUT_NEXT_FOCUS_ACTIVATE,
 	LAYOUT_NEXT_FOCUS_SET,
 } from 'state/action-types';
-import { setFocusHideClass } from 'lib/layout-focus';
 
 const initialState = { current: null, previous: null, next: null };
 const validAreas = [ 'content', 'sidebar', 'sites', 'preview' ];
@@ -23,7 +22,6 @@ export default function layoutFocus( state = initialState, action ) {
 			if ( ! isValidArea( action.area ) ) {
 				return state;
 			}
-			setFocusHideClass();
 			return Object.assign( {}, state, { current: action.area, previous: state.current } );
 		case LAYOUT_NEXT_FOCUS_SET:
 			if ( ! isValidArea( action.area ) ) {
@@ -38,7 +36,6 @@ export default function layoutFocus( state = initialState, action ) {
 			if ( ! state.next && ! state.previous ) {
 				return state;
 			}
-			setFocusHideClass();
 			return Object.assign( {}, state, { current: state.next || 'content', previous: state.current, next: null } );
 	}
 	return state;

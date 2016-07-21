@@ -23,23 +23,6 @@ function isValid( area ) {
 	return valid;
 }
 
-// This is unfortunately necessary to avoid layout elements still in the DOM
-// being targeted by things like browser inline search, which may cause odd
-// positioning effects by having their CSS modified.
-function setFocusHideClass() {
-	if ( typeof document === 'undefined' ) {
-		return;
-	}
-	// Whenever layout focus changes remove `focus-hide` so
-	// that animations can occur with all elements visible.
-	document.documentElement.classList.remove( 'focus-hide' );
-
-	// After transitions restore `focus-hide`
-	setTimeout( function() {
-		document.documentElement.classList.add( 'focus-hide' );
-	}, 200 );
-}
-
 // Used to keep a reference to the Redux store so we can update it when the
 // legacy Flux store is updated.
 let reduxStore;
@@ -91,8 +74,6 @@ const layoutFocus = {
 
 		this._previous = this._current;
 
-		setFocusHideClass();
-
 		// Update current state and emit change event
 		this._current = area;
 		this.emit( 'change' );
@@ -141,6 +122,5 @@ const layoutFocus = {
 Emitter( layoutFocus );
 
 layoutFocus.bindLayoutFocusStore = bindLayoutFocusStore;
-layoutFocus.setFocusHideClass = setFocusHideClass;
 
 module.exports = layoutFocus;
