@@ -66,7 +66,7 @@ const dialogPositioners = {
 	} ),
 	center: ( { left, right } ) => ( {
 		x: Math.max( 0, middle( left, right ) - DIALOG_WIDTH / 2 ),
-		y: MASTERBAR_HEIGHT / 2,
+		y: 0.2 * document.documentElement.clientHeight,
 	} ),
 	middle: ( { left, right } ) => ( {
 		x: Math.max( 0, middle( left, right ) - DIALOG_WIDTH / 2 ),
