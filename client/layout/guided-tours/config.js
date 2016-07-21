@@ -194,10 +194,9 @@ const tours = {
 		'tab-bar': {
 			text: i18n.translate( 'Here you can read all the details about the theme, its support — and if available, the setup documentation.' ),
 			type: 'BasicStep',
-			placement: 'beside',
+			placement: 'center',
 			target: '.section-nav',
 			showInContext: state => getSectionName( state ) === 'theme',
-			arrow: 'left-top',
 			next: 'live-preview',
 		},
 		'live-preview': {
@@ -210,7 +209,7 @@ const tours = {
 			next: 'close-preview',
 		},
 		'close-preview': {
-			target: 'web-preview__close',
+			target: '.web-preview.is-visible [data-tip-target="web-preview__close"]',
 			arrow: 'left-top',
 			type: 'ActionStep',
 			placement: 'beside',

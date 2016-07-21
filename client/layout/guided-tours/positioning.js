@@ -87,7 +87,16 @@ export const posToCss = ( { x, y } ) => ( {
 } );
 
 export function targetForSlug( targetSlug ) {
-	return query( '[data-tip-target="' + targetSlug + '"]' )[ 0 ] || query( targetSlug )[ 0 ]
+	if ( !targetSlug ) {
+		return null;
+	}
+	if ( targetSlug.indexOf( '.' ) !== -1 || targetSlug.indexOf( ' ' ) !== -1 ) {
+		// a sort of hacky way to discern tip targets and regular css for now
+		// (e.g. misses #ids, ...)
+		// TODO(lsinger): fix this
+		return query( targetSlug )[ 0 ];
+	}
+	return query( '[data-tip-target="' + targetSlug + '"]' )[ 0 ];
 }
 
 export function getValidatedArrowPosition( { targetSlug, arrow, stepPos } ) {
