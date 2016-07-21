@@ -159,7 +159,11 @@ const tours = {
 			next: 'mobileFilter',
 		},
 		filter: {
-			text: i18n.translate( 'Here you can filter between free and premium themes. Try filtering by free themes now.' ),
+			text: i18n.translate( 'Here you can filter between free and premium themes. Try filtering by {{strong}}free themes{{/strong}} now.', {
+				components: {
+					strong: <strong />,
+				}
+			} ),
 			type: 'ActionStep',
 			target: 'themes-tier-dropdown',
 			placement: 'above',
@@ -171,7 +175,11 @@ const tours = {
 			next: 'choose-theme',
 		},
 		mobileFilter: {
-			text: i18n.translate( 'You can filter between free & paid themes. Try filtering by free themes' ),
+			text: i18n.translate( 'Here you can filter between free and premium themes. Try filtering by {{strong}}free themes{{/strong}} now.', {
+				components: {
+					strong: <strong />,
+				}
+			} ),
 			type: 'ActionStep',
 			target: '.themes__search-card .section-nav__mobile-header',
 			placement: 'above',
@@ -192,7 +200,7 @@ const tours = {
 			next: 'tab-bar',
 		},
 		'tab-bar': {
-			text: i18n.translate( 'Here you can read all the details about the theme, its support — and if available, the setup documentation.' ),
+			text: i18n.translate( 'Here you can take a look at more screenshots of the theme, read about its features, or get help on how to use it.' ),
 			type: 'BasicStep',
 			placement: 'center',
 			target: '.section-nav',
@@ -224,7 +232,7 @@ const tours = {
 		},
 		finish: {
 			placement: 'center',
-			text: i18n.translate( "That's it! You can choose to activate this theme now, or continue browsing all the other themes."),
+			text: i18n.translate( "That's it! You can choose to activate this theme now, or continue browsing all the other themes." ),
 			type: 'FinishStep',
 		},
 	},
