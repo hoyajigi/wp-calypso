@@ -4,6 +4,7 @@
  * External dependencies
  */
 import { get, difference, find, map, memoize, noop, startsWith, uniq } from 'lodash';
+import moment from 'moment';
 import debugFactory from 'debug';
 
 /**
@@ -77,11 +78,10 @@ const getTourFromQuery = createSelector(
 	getInitialQueryArguments
 );
 
-const DAY_IN_MILLISECONDS = 1000 * 3600 * 24;
 export const isNewUser = state => {
 	const user = getCurrentUser( state );
 	const creation = Date.parse( user.date );
-	return ( Date.now() - creation ) <= DAY_IN_MILLISECONDS;
+	return ( Date.now() - creation ) <= moment.duration( 1, 'day' ).asMilliseconds();
 };
 
 /*
