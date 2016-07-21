@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import omit from 'lodash/omit';
-
-/**
  * Internal dependencies
  */
 import wpcom from 'lib/wp';
@@ -285,7 +280,7 @@ export function restorePost( siteId, postId ) {
 				siteId,
 				postId
 			} );
-			dispatch( receivePost( omit( restoredPost, '_headers' ) ) );
+			dispatch( receivePost( restoredPost ) );
 		} ).catch( ( error ) => {
 			dispatch( {
 				type: POST_RESTORE_FAILURE,

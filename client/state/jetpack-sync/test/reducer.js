@@ -53,11 +53,7 @@ const successfulSyncStatusRequest = {
 			posts: 15,
 			comments: 1
 		},
-		is_scheduled: false,
-		_headers: {
-			Date: 'Wed, 15 Jun 2016 17:05:26 GMT',
-			'Content-Type': 'application/json'
-		}
+		is_scheduled: false
 	}
 };
 
@@ -88,11 +84,7 @@ const inProgressSyncStatusRequest = {
 			users: 1,
 			posts: 25
 		},
-		is_scheduled: false,
-		_headers: {
-			Date: 'Wed, 15 Jun 2016 17:05:26 GMT',
-			'Content-Type': 'application/json'
-		}
+		is_scheduled: false
 	}
 };
 
@@ -108,11 +100,7 @@ const successfulFullSyncRequest = {
 	type: JETPACK_SYNC_START_SUCCESS,
 	siteId: 1234567,
 	data: {
-		scheduled: true,
-		_headers: {
-			Date: 'Wed, 15 Jun 2016 17:05:26 GMT',
-			'Content-Type': 'application/json'
-		}
+		scheduled: true
 	}
 };
 

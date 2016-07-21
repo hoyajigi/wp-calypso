@@ -122,9 +122,10 @@ UserSettings.prototype.saveSettings = function( callback, settingsOverride ) {
 			} else {
 				// Removed freshly saved data from unsavedSettings
 				keys( data )
-					.filter( x => x !== '_headers' )
 					.forEach( x => delete this.unsavedSettings[ x ] );
 			}
+
+			console.log( 'data: %o', data );
 
 			this.emit( 'change' );
 

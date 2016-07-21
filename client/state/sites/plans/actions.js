@@ -3,7 +3,6 @@
  */
 import debugFactory from 'debug';
 import map from 'lodash/map';
-import omit from 'lodash/omit';
 import i18n from 'i18n-calypso';
 
 const debug = debugFactory( 'calypso:site-plans:actions' );
@@ -51,7 +50,9 @@ export function cancelSitePlanTrial( siteId, planId ) {
 				} else {
 					debug( 'Canceling site plan trial failed: ', error );
 
-					const errorMessage = error.message || i18n.translate( 'There was a problem canceling the plan trial. Please try again later or contact support.' );
+					const errorMessage = error.message || i18n.translate(
+						'There was a problem canceling the plan trial. Please try again later or contact support.'
+					);
 
 					dispatch( {
 						type: SITE_PLANS_TRIAL_CANCEL_FAILED,
@@ -97,7 +98,9 @@ export function fetchSitePlans( siteId ) {
 				if ( error ) {
 					debug( 'Fetching site plans failed: ', error );
 
-					const errorMessage = error.message || i18n.translate( 'There was a problem fetching site plans. Please try again later or contact support.' );
+					const errorMessage = error.message || i18n.translate(
+						'There was a problem fetching site plans. Please try again later or contact support.'
+					);
 
 					dispatch( {
 						type: SITE_PLANS_FETCH_FAILED,
@@ -123,7 +126,7 @@ export function fetchSitePlans( siteId ) {
  * @returns {Object} the corresponding action object
  */
 export function fetchSitePlansCompleted( siteId, data ) {
-	const plans = insertSitePersonalPlan( omit( data, '_headers' ) );
+	const plans = insertSitePersonalPlan( data );
 
 	return {
 		type: SITE_PLANS_FETCH_COMPLETED,

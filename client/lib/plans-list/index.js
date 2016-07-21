@@ -2,7 +2,6 @@
  * External dependencies
  */
 import debugFactory from 'debug';
-import reject from 'lodash/reject';
 import store from 'store';
 
 /**
@@ -71,7 +70,7 @@ PlansList.prototype.fetch = function() {
 			return;
 		}
 
-		const plans = insertPersonalPlan( this.parse( data ) );
+		const plans = insertPersonalPlan( data );
 
 		debug( 'PlansList fetched from api:', plans );
 
@@ -94,16 +93,6 @@ PlansList.prototype.fetch = function() {
 PlansList.prototype.initialize = function( plans ) {
 	this.data = plans;
 	this.initialized = true;
-};
-
-/**
- * Parses data retrieved from the API and extracts the list of plans.
- *
- * @param {array} data - raw data
- * @return {array} a list of plans
- **/
-PlansList.prototype.parse = function( data ) {
-	return reject( data, '_headers' );
 };
 
 /**
