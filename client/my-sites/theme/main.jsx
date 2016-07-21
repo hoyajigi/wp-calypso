@@ -27,7 +27,7 @@ import NavItem from 'components/section-nav/item';
 import Card from 'components/card';
 import Gridicon from 'components/gridicon';
 import { getSelectedSite } from 'state/ui/selectors';
-import { getSiteSlug, isSiteContentUnmodified } from 'state/sites/selectors';
+import { getSiteSlug } from 'state/sites/selectors';
 import { isPremium, getForumUrl } from 'my-sites/themes/helpers';
 import ThanksModal from 'my-sites/themes/thanks-modal';
 import QueryCurrentTheme from 'components/data/query-current-theme';
@@ -266,19 +266,19 @@ const ThemeSheet = React.createClass( {
 	},
 
 	renderPreview() {
-		const showSecondaryButton = this.props.secondaryOption && ! this.props.isSiteUnmodified &&
-			! this.props.active && this.props.isLoggedIn;
+		const { secondaryOption, active, isLoggedIn, defaultOption } = this.props;
+		const showSecondaryButton = secondaryOption && ! active && isLoggedIn;
 		return (
 			<ThemePreview showPreview={ this.state.showPreview }
 				theme={ this.props }
 				onClose={ this.togglePreview }
 				showSecondaryButton={ showSecondaryButton }
-				primaryButtonLabel={ this.props.defaultOption.label }
-				getPrimaryButtonHref={ this.props.defaultOption.getUrl }
+				primaryButtonLabel={ defaultOption.label }
+				getPrimaryButtonHref={ defaultOption.getUrl }
 				onPrimaryButtonClick={ this.onButtonClick }
-				secondaryButtonLabel={ this.props.secondaryOption ? this.props.secondaryOption.label : null }
+				secondaryButtonLabel={ secondaryOption ? secondaryOption.label : null }
 				onSecondaryButtonClick={ this.onSecondaryButtonClick }
-				getSecondaryButtonHref={ this.props.secondaryOption ? this.props.secondaryOption.getUrl : null }
+				getSecondaryButtonHref={ secondaryOption ? secondaryOption.getUrl : null }
 				/>
 		);
 	},
@@ -430,8 +430,7 @@ export default connect(
 		const selectedSite = getSelectedSite( state );
 		const siteSlug = selectedSite ? getSiteSlug( state, selectedSite.ID ) : '';
 		const backPath = getBackPath( state );
-		const isSiteUnmodified = selectedSite ? isSiteContentUnmodified( state, selectedSite.ID ) : false;
-		return { selectedSite, siteSlug, backPath, isSiteUnmodified };
+		return { selectedSite, siteSlug, backPath };
 	},
 	bindDefaultOptionToDispatch,
 	mergeProps
