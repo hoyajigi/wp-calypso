@@ -16,7 +16,8 @@ export default (
 	class Tracked extends Component {
 		constructor( props, context ) {
 			super( props, context );
-			this.dispatch = ( props.store || context.store ).dispatch;
+			const store = ( props.store || context.store );
+			this.dispatch = store ? store.dispatch : noop;
 		}
 
 		onClick = ( event ) => {
