@@ -10,7 +10,7 @@ import debugModule from 'debug';
 const debug = debugModule( 'calypso:wpcom-xhr-wrapper' );
 
 export default function( params, callback ) {
-	return xhr( params, function( error, response ) {
+	return xhr( params, function( error, response, headers ) {
 		if ( error ) {
 			if ( error.response && typeof error.response.body ) {
 				// Extend the error object in a way to match wpcom-proxy-request
@@ -26,6 +26,6 @@ export default function( params, callback ) {
 			}
 		}
 
-		callback( error, response );
+		callback( error, response, headers );
 	} );
 }
