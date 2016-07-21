@@ -169,6 +169,86 @@ describe( 'selectors', () => {
 
 			expect( hasSwitchedSections ).to.be.false;
 		} );
+
+		it( 'should return true if the user directly loaded the page in Safari Private Mode', () => {
+			const actions = [
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+					timestamp: 100,
+				},
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+					timestamp: 10000
+				}
+			];
+
+			const hasSwitchedSections = switchedFromDifferentSection( {
+				ui: {
+					section: {
+						paths: [ '/stats' ]
+					},
+					actionLog: actions
+				}
+			}, 'stats' );
+
+			expect( hasSwitchedSections ).to.be.true;
+		} );
+
+		it( 'should return false if the user navigated directly to the same path after a delay', () => {
+			const actions = [
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+					timestamp: 100,
+				},
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+					timestamp: 31000
+				}
+			];
+
+			const hasSwitchedSections = switchedFromDifferentSection( {
+				ui: {
+					section: {
+						paths: [ '/stats' ]
+					},
+					actionLog: actions
+				}
+			}, 'stats' );
+
+			expect( hasSwitchedSections ).to.be.false;
+		} );
+
+		it( 'should return false if the user navigated to the exact same path twice in a row', () => {
+			const actions = [
+				{
+					type: ROUTE_SET,
+					path: '/stats/day',
+				},
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+				},
+				{
+					type: ROUTE_SET,
+					path: '/stats/insights',
+				}
+			];
+
+			const hasSwitchedSections = switchedFromDifferentSection( {
+				ui: {
+					section: {
+						paths: [ '/stats' ]
+					},
+					actionLog: actions
+				}
+			}, 'stats' );
+
+			expect( hasSwitchedSections ).to.be.false;
+		} );
 	} );
 
 	describe( '#secondsSpentOnCurrentView()', () => {
