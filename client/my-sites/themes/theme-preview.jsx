@@ -70,7 +70,7 @@ export default React.createClass( {
 				previewUrl={ previewUrl }
 				externalUrl={ this.props.theme.demo_uri } >
 				{ this.renderSecondaryButton() }
-				<Button onClick={ this.onPrimaryButtonClick } href={ buttonHref } >
+				<Button primary onClick={ this.onPrimaryButtonClick } href={ buttonHref } >
 					{ this.props.primaryButtonLabel }
 				</Button>
 			</WebPreview>
