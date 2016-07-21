@@ -50,9 +50,9 @@ const ThemeShowcase = React.createClass( {
 	},
 
 	onPrimaryPreviewButtonClick( theme ) {
-		const { defaultOption } = this.props;
+		const option = this.getPrimaryOption();
 		this.setState( { showPreview: false }, () => {
-			defaultOption.action && defaultOption.action( theme );
+			option.action && option.action( theme );
 		} );
 	},
 
@@ -63,8 +63,24 @@ const ThemeShowcase = React.createClass( {
 		} );
 	},
 
+	getPrimaryOption() {
+		if ( ! this.state.showPreview ) {
+			return this.props.defaultOption;
+		}
+		const { translate } = this.props;
+		const { purchase } = this.props.options;
+		const { price } = this.state.previewingTheme;
+		if ( price && purchase ) {
+			const defaultOption = purchase;
+			defaultOption.label = translate( 'Pick this design' );
+			return defaultOption;
+		}
+		return this.props.defaultOption;
+	},
+
 	render() {
-		const { options, defaultOption, getScreenshotOption, secondaryOption } = this.props;
+		const { options, getScreenshotOption, secondaryOption } = this.props;
+		const primaryOption = this.getPrimaryOption();
 
 		// If a preview action is passed, use that. Otherwise, use our own.
 		if ( options.preview && ! options.preview.action ) {
@@ -79,8 +95,8 @@ const ThemeShowcase = React.createClass( {
 					<ThemePreview showPreview={ this.state.showPreview }
 						theme={ this.state.previewingTheme }
 						onClose={ this.togglePreview }
-						primaryButtonLabel={ defaultOption.label }
-						getPrimaryButtonHref={ defaultOption.getUrl }
+						primaryButtonLabel={ primaryOption.label }
+						getPrimaryButtonHref={ primaryOption.getUrl }
 						onPrimaryButtonClick={ this.onPrimaryPreviewButtonClick }
 						showSecondaryButton={ !! secondaryOption }
 						secondaryButtonLabel={ secondaryOption ? secondaryOption.label : null }
